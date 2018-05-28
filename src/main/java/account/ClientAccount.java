@@ -39,6 +39,6 @@ public class ClientAccount extends Account
     @Override
     protected void pay()
     {
-        coinAccount.exchange()
+        //coinAccount.exchange()
     }
 }

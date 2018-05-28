@@ -1,6 +1,7 @@
 package store;
 
-public class Menu {
+public class Menu
+{
 
 
 

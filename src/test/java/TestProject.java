@@ -1,5 +1,6 @@
 
 import org.junit.jupiter.api.Test;
+import store.Store;
 import store.deliver.Deliver;
 import store.deliver.DroneDeliver;
 import store.deliver.QuickDeliver;
@@ -13,12 +14,11 @@ public class TestProject {
     {
         Deliver deliver = new Deliver();
 
-        //deliver.deliverStart();
+        Store store = new Store("중국집","홍콩반점");
+        Store store2 = new Store("중국집","홍콩반점");
+        Store store3 = new Store("중국집","홍콩반점");
 
-        DroneDeliver d = new DroneDeliver();
-        QuickDeliver q = new QuickDeliver();
 
-        d.deliverStart();
-        q.deliverStart();
+        store.sendDeliver(1);
     }
 }

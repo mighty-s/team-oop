@@ -15,6 +15,7 @@ public class Client
     public Client()
     {
         phone = new Phone();
+        account = new ClientAccount();
     }
 
     public Client(String id, Phone phone, ClientAccount account )
@@ -43,7 +44,7 @@ public class Client
      */
     public void order()
     {
-        account.pay();
+        //account.pay();
     }
 
     /**

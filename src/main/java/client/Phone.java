@@ -9,12 +9,12 @@ public class Phone
     private String phoneNumber;         // 핸드폰 번호
 
     // 생성자
-    public Phone(){}
-
-    public Phone(String location,String phoneNumber)
+    public Phone()
     {
-        this.location = location;
-        this.phoneNumber = phoneNumber;
+        String location[] = {"혜화동","명동","장충동","신당동","신사동","논현동"};
+        this.location = location[(int)(Math.random()*location.length)];
+        this.phoneNumber = "010-" + (int)(Math.random()*8999)+1000 +"-"+(int)(Math.random()*8999)+1000;
+                            // 핸드폰번호는 " 010-xxxx-xxxx" 형식
     }
 
     /**
