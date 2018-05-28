@@ -19,7 +19,7 @@ public class Store
     private List<Menu> orderList;                           // 매뉴 리스트       (배열)
     private String storeType;                               // 가게 종류
     private String storeName;                               // 가게 이름
-    public String location;                                // 가게 위치
+    private String location;                                // 가게 위치
 
     // 생성자
     public Store(String storeType, String storeName)
