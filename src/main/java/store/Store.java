@@ -40,10 +40,10 @@ public class Store
             deliver_ready.offer(new QuickDeliver());
         }
 
-        for(int i = 0; i < 5 ; i++)
+        for(int i = 0; i < 5 ; i++)         // 기본적으로 모든 가게는 평점을 5개씩 가지고 있다.
         {
             int rate =(int)(Math.random()*5);   // 0 ~ 5이하의 난수
-            rateList.add(new Rate(this,new Client(),rate));     //rateList에 평점을 넣는다 인자 : (자기 자신의 가게 객체, 새로운 고객, 위의 난수)
+            rateList.add(new Rate(this,new Client(),rate));     //rateList에 평점을 넣는다. 인자 : (자기 자신의 가게 객체, 새로운 고객, 위의 난수)
         }
     }
 
@@ -59,11 +59,11 @@ public class Store
      * 배달을 보내는 함수
      * @param deliverType 사용자가 원하는 타입의 배달,
      */
-    public void sendDeliver(int deliverType)   // 1. 일반 배달, 2. 퀵배달, 3. 드론배달
+    public void sendDeliver(int deliverType)   // deliverType , 1. 일반 배달, 2. 퀵배달, 3. 드론배달
     {
         Deliver deliver = pickDeliver(deliverType);       // 대기중인 배달부 큐에서 데이터를 꺼낸다.
         try{
-            deliver.deliverStart();
+            deliver.deliverStart();                      //  뽑은 배달부를 배달보낸다.
         }catch(InterruptedException e) {
             e.printStackTrace();
             System.out.println("배달 실패");
@@ -151,17 +151,18 @@ public class Store
 
     /**
      * 가게의 평균 평점을 구하는 함수
-     * @return  가게의 평균 평점
+     * @return  가게의 평균 평점( 소수점 둘째자리에서 반올림 ex)3.5 )
      */
-    public int getAvgRate()
+    public double getAvgRate()
     {
-
+        double avgRate = 0;
         for(int i = 0; i < rateList.size() ; i++)
         {
-            rateList.get(i).getRate();
+            avgRate += rateList.get(i).getRate();   //평균을 구하기 위해 평점값을 계속 더해준다.
         }
 
-        return 0;
+        avgRate = avgRate/rateList.size();  // 평균 계산식 : 총 평점값 / 평점수
+        return Math.round(avgRate*10)/10.0; //소수점 2째자리에서 반올림
     }
 
 }

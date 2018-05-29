@@ -73,8 +73,10 @@ public class App
      * 사용자로부터 음식을 주문받는 함수
      * @param client
      */
-    public void orderFood(Client client)
+    public void orderFood(Client client) throws IOException
     {
+        String store = findNearStore(client,0);
+
 
     }
 
@@ -93,7 +95,7 @@ public class App
      * @param client        사용자
      * @param rateLimit     검색시 평점 x점 이상이라는 제한을 두기 위해 만듬
      * */
-    private void findNearStore(Client client,int rateLimit) throws IOException
+    private String findNearStore(Client client,double rateLimit) throws IOException
     {
         Map<Integer,String> selectedStore = new HashMap<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -122,8 +124,9 @@ public class App
         int mapCount = 1;       // map에 1,2,3.. 순서대로 집어넣기 위한 변수
         for(int i = 0; i <storeList.size(); i++) // storeList 배열을 처음부터 끝까지 순회
         {
-            if(storeList.get(i).getLocation().equals(client.getLocation()) // 가게의 위치와 사용자의 위치가 같고,
-                    && storeList.get(i).getStoreType().equals(choice))     // 사용자가 선택한 가게 타입과, 가게의 업종이 같을 때
+            if(storeList.get(i).getLocation().equals(client.getLocation()) // 조건 1. 가게의 위치와 사용자의 위치가 같고,
+                    && storeList.get(i).getStoreType().equals(choice)      // 조건 2. 사용자가 선택한 가게 타입과, 가게의 업종이 같고,
+                    && storeList.get(i).getAvgRate() >= rateLimit  )       // 조건 3. 해당 가게의 평균 평점이 제시한 평균 평점보다 높을때,
             {
                 selectedStore.put(mapCount,storeList.get(i).getStoreName());    //찾은 가게 이름을 map에 <순서,가게이름> 형태로 저장한다.
                 System.out.println(mapCount + " : 가게 이름 : " + storeList.get(i).getStoreName());
@@ -132,12 +135,15 @@ public class App
         }// end for i
 
         System.out.println("원하는 가게 번호를 골라주세요");
-        choice = br.readLine();
+        choice = br.readLine(); // scanf
 
+        // choice는 문자열이므로 -> 정수로 변환해줘야한다. 자바에서는 Integer.parseInt(문자열) 사용시 문자가 정수로 변환됨
+        // C++ 에서 string을 int로 변환하려면 stoi(문자열)함수를 사용해야한다.
 
+        br.close(); //버퍼 닫기
+        return selectedStore.get(Integer.parseInt(choice)); // 맵에 해당 키에 대한 값을 꺼내서 리턴한다
+                                                            // ex) choice에서 1을 선택하면, (1, "몸고반점")에가서 "몸고반점"값을 리턴한다.
     }// end findNearStore
-
-
 
     /**
      * 고객을 App에 등록하는 함수
