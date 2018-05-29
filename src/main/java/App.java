@@ -140,7 +140,7 @@ public class App
         // choice는 문자열이므로 -> 정수로 변환해줘야한다. 자바에서는 Integer.parseInt(문자열) 사용시 문자가 정수로 변환됨
         // C++ 에서 string을 int로 변환하려면 stoi(문자열)함수를 사용해야한다.
 
-        br.close(); //버퍼 닫기
+        //br.close(); //버퍼 닫기
         return selectedStore.get(Integer.parseInt(choice)); // 맵에 해당 키에 대한 값을 꺼내서 리턴한다
                                                             // ex) choice에서 1을 선택하면, (1, "몸고반점")에가서 "몸고반점"값을 리턴한다.
     }// end findNearStore
