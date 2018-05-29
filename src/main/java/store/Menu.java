@@ -3,7 +3,7 @@ package store;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Menu       // 메뉴판 하나를 내는 클ㄹ스
+public class Menu       // 메뉴판 하나에 대한 클래스
 {
     // 멤버 변수
     private Map<String,Integer> menuList;  // 메뉴의 목록을 가지고 있는 리스트
@@ -59,3 +59,5 @@ public class Menu       // 메뉴판 하나를 내는 클ㄹ스
         */
     }
 }
+
+

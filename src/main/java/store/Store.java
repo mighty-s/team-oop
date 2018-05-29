@@ -1,5 +1,6 @@
 package store;
 
+import client.Client;
 import store.deliver.Deliver;
 import store.deliver.DroneDeliver;
 import store.deliver.QuickDeliver;
@@ -37,6 +38,12 @@ public class Store
             deliver_ready.offer(new Deliver());
             deliver_ready.offer(new DroneDeliver());
             deliver_ready.offer(new QuickDeliver());
+        }
+
+        for(int i = 0; i < 5 ; i++)
+        {
+            int rate =(int)(Math.random()*5);   // 0 ~ 5이하의 난수
+            rateList.add(new Rate(this,new Client(),rate));     //rateList에 평점을 넣는다 인자 : (자기 자신의 가게 객체, 새로운 고객, 위의 난수)
         }
     }
 
@@ -113,15 +120,48 @@ public class Store
 
     }
 
-    //*************** getters && setters
+    //*************** getters && setter ********************
+
+    /**
+     * 가게의 위치를 가져오는 함수
+     * @return 가게 위치
+     */
     public String getLocation()
     {
         return this.location;
     }
 
+    /**
+     * 가게의 이름을 가져오는 함수
+     * @return 가게의 이름
+     */
     public String getStoreName()
     {
         return this.storeName;
+    }
+
+    /**
+     * 가게의 타입을 가져오는 함수
+     * @return 가게의 업종 타입
+     */
+    public String getStoreType()
+    {
+        return this.storeType;
+    }
+
+    /**
+     * 가게의 평균 평점을 구하는 함수
+     * @return  가게의 평균 평점
+     */
+    public int getAvgRate()
+    {
+
+        for(int i = 0; i < rateList.size() ; i++)
+        {
+            rateList.get(i).getRate();
+        }
+
+        return 0;
     }
 
 }
