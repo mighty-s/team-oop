@@ -9,8 +9,7 @@ public abstract class Account
     // 생성자
     protected Account()
     {
-        this.id = (int)Math.random() * 9999 + "-" + (int)Math.random() * 9999;  // "9999-9999" 형식의 랜덤 ID
-        System.out.println(this.id);
+        this.id = (int)(Math.random() * 9999) + "-" + (int)(Math.random() * 9999);  // "9999-9999" 형식의 랜덤 ID
         this.money = 0;
     }
 

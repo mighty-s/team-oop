@@ -5,10 +5,7 @@ import store.deliver.DroneDeliver;
 import store.deliver.QuickDeliver;
 
 import java.sql.Driver;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Store
 {
@@ -17,6 +14,7 @@ public class Store
     private Queue<Deliver> deliver_work;          // 배달중인 배달부 목록  (큐)
     private List<Rate> rateList;                            // 평점 리스트       (배열)
     private List<Menu> orderList;                           // 매뉴 리스트       (배열)
+    private Menu menu;
     private String storeType;                               // 가게 종류
     private String storeName;                               // 가게 이름
     private String location;                                // 가게 위치
@@ -25,11 +23,11 @@ public class Store
     public Store(String storeType, String storeName)
     {
         String location[] = {"혜화동","명동","장충동","신당동","신사동","논현동"};
-        rateList  = new ArrayList<>(20);
-        orderList = new ArrayList<>(20);
-        deliver_ready = new LinkedList<>();
-        deliver_work  = new LinkedList<>();
-
+        rateList  = new ArrayList<>(20);        // 배열
+        orderList = new ArrayList<>(20);        // 배열
+        deliver_ready = new LinkedList<>();                  // 큐
+        deliver_work  = new LinkedList<>();                  // 큐
+        menu = new Menu(storeType);
         this.storeType = storeType;
         this.storeName = storeName;
         this.location = location[(int)(Math.random()*location.length)];       //location 배열 중의 랜덤한 값중 하나
@@ -47,7 +45,7 @@ public class Store
      */
     public void showMenu()
     {
-
+        menu.showMenu();
     }
 
     /**
@@ -113,6 +111,17 @@ public class Store
     public void deliverEnd()
     {
 
+    }
+
+    //*************** getters && setters
+    public String getLocation()
+    {
+        return this.location;
+    }
+
+    public String getStoreName()
+    {
+        return this.storeName;
     }
 
 }

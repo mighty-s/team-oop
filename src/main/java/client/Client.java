@@ -61,4 +61,12 @@ public class Client
     {
 
     }
+
+    /**
+     *  나의 현재위치를 보여주는 함수
+     */
+    public String getLocation()
+    {
+        return phone.getLocation();
+    }
 }
