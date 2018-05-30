@@ -53,6 +53,8 @@ public class App
         return SingleTon.instance;
     }
 
+    // ----------------------------------- 멤버 함수 --------------------------------------------------
+
     /**
      * 가게들로부터 수수료를 받는 함수
      */
@@ -75,9 +77,21 @@ public class App
      */
     public void orderFood(Client client) throws IOException
     {
-        String store = findNearStore(client,0);     // 평점에 상관없이 근처 음식점 데이터를 가져옴으로 0
-        if(store == null)return; // 주변에 검색된 가게가 없으면 자동 종료
+        String storeName = findNearStore(client,0);     // 평점에 상관없이 근처 음식점 데이터를 가져옴으로
+        Store store = null;                                      //
+        if(storeName == null)return; // 주변에 검색된 가게가 없으면 자동 종료
 
+        // storeList를 순회하다 사용자가 선택한 가게 이름을 가진 store객체를 찾으면 store 변수에 대입하고 루프 탈출
+        for(int i = 0 ; i < storeList.size() ; i++)
+        {
+            if(storeList.get(i).getStoreName().equals(storeName)) // storeList의 i번째 가게 객체의 이름과, 유저가 선택한 가게 이름이 같을 때,
+            {
+                store = storeList.get(i);
+                break;
+            }
+        }
+
+        store.makeOrder(client);
     }
 
     /**
@@ -91,6 +105,7 @@ public class App
 
         if(store == null)return; // 주변에 검색된 가게가 없으면 자동 종료
     }
+
 
     /**
      * 유저 근처에 있는 가게 목록을 찾고, 유저가 선택한 가게 이름을 출력해주는 함수
@@ -121,19 +136,19 @@ public class App
                 break;
         }
 
-        System.out.println("**당신의 위치** : " + client.getLocation() + "\n인근 가게----------");
+        System.out.println("** 당신의 위치** : " + client.getLocation() + "\n인근 가게----------");
 
         int mapCount = 1;       // map에 1,2,3.. 순서대로 집어넣기 위한 변수
-        for(int i = 0; i <storeList.size(); i++) // storeList 배열을 처음부터 끝까지 순회
+        for(int i = 0; i < storeList.size(); i++) // storeList 배열을 처음부터 끝까지 순회
         {
-            if(storeList.get(i).getLocation().equals(client.getLocation()) // 조건 1. 가게의 위치와 사용자의 위치가 같고,
-                    && storeList.get(i).getStoreType().equals(choice)      // 조건 2. 사용자가 선택한 가게 타입과, 가게의 업종이 같고,
-                    && storeList.get(i).getAvgRate() >= rateLimit  )       // 조건 3. 해당 가게의 평균 평점이 제시한 평균 평점보다 높을때,
+            if(storeList.get(i).getLocation().equals(client.getLocation())          // 조건 1. 가게의 위치와 사용자의 위치가 같고,
+                    && storeList.get(i).getStoreType().equals(choice)               // 조건 2. 사용자가 선택한 가게 타입과, 가게의 업종이 같고,
+                    && storeList.get(i).getAvgRate() >= rateLimit  )                // 조건 3. 해당 가게의 평균 평점이 제시한 평균 평점보다 높을때,
             {
-                selectedStore.put(mapCount,storeList.get(i).getStoreName());    //찾은 가게 이름을 map에 <순서,가게이름> 형태로 저장한다
-                                                                                //ex) 1. 가게이름 몽고반점,  --> selectedStore 에는 (1, "몽고반점")이 들어가 있음
+                selectedStore.put(mapCount,storeList.get(i).getStoreName());        //찾은 가게 이름을 map에 <순서,가게이름> 형태로 저장한다
+                                                                                    //ex) 1. 가게이름 몽고반점,  --> selectedStore 에는 (1, "몽고반점")이 들어가 있음
                 System.out.println(mapCount + " : 가게 이름 : \t\t" + storeList.get(i).getStoreName()
-                                             + " || 평균 평점 \t\t:" + storeList.get(i).getAvgRate());
+                        + " || 평균 평점 \t\t:" + storeList.get(i).getAvgRate());
                 mapCount++;
             }
         }// end for i
@@ -152,25 +167,24 @@ public class App
 
         //br.close(); //버퍼 닫기
         return selectedStore.get(Integer.parseInt(choice)); // 맵에 해당 키에 대한 값을 꺼내서 리턴한다
-                                                            // ex) choice에서 1을 선택하면, (1, "몸고반점")에가서 "몸고반점"값을 리턴한다.
+        // ex) choice에서 1을 선택하면, (1, "몸고반점")에가서 "몸고반점"값을 리턴한다.
     }// end findNearStore
-
 
 
     /**
      * 고객을 App에 등록하는 함수
-     * @prarm  client 고객
+     * @prarm  client  고객
+     *
      */
     public void add(Client client)
     {
         clientList.add(client);
     }
 
-
-
     /**
      * 가게를 App에 등록하는 함수
-     * @param  store 상점
+     * @param  store    상점
+     *
      */
     public void add(Store store)
     {

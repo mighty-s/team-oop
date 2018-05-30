@@ -18,30 +18,32 @@ public class Main
         while(!command.equals("0"))  // 위에서 읽어들인 문자열이 0일때 까지
         {
             System.out.println("+-------------------------------------------------------+\n"+
-                    "|        배달음식 전문 앱 저기요에 오신걸 환영합니다         |\n"+
-                    "|                         메뉴                           |\n"+
-                    "|     1. 음식 주문하기            2. 주변 맛집 찾아보기     |\n"+
-                    "|     3.                         4.                     | \n"+
-                    "|     0. 종료하기                                        | \n"+
-                    "+-------------------------------------------------------+\n");
+                               "|        배달음식 전문 앱 저기요에 오신걸 환영합니다         |\n"+
+                               "|                         메뉴                           |\n"+
+                               "|     1. 음식 주문하기            2. 주변 맛집 찾아보기     |\n"+
+                               "|     3.                         4.                     | \n"+
+                               "|     0. 종료하기                                        | \n"+
+                               "+-------------------------------------------------------+\n");
             command = br.readLine();    // 여기서 한줄을 읽어준다. 실제 scanf가 실행되는 부분
             switch(command)
             {
                 case "1":
-                    app.orderFood(client);
+                    app.orderFood(client);      // 기본 음식 주문
                     break;
                 case "2":
-                    app.findGoodPlace(client); //맛집 추천
+                    app.findGoodPlace(client);  // 맛집을 찾은 뒤 주문
                     break;
                 case "3":
                     break;
                 case "4":
                     break;
+                case "0":
+                    System.out.println("저희 앱을 찾아주셔서 갑사합니다");
+                    break;
                 default:
                     System.out.println("다시 입력해 주십시오");
                     break;
             }
-
         }
 
         br.close();

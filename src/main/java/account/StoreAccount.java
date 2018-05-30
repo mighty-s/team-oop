@@ -14,19 +14,21 @@ public class StoreAccount extends Account
 
     /**
      * 수수료를 지불하는 함수
+     * @param  money   입력받을 수수료
+     * @return bool    수수료 지불 성공시 true, 실패시 false
      */
     @Override
-    protected void pay()
-    {
-
+    public boolean pay(int money) {
+        return false;
     }
 
     /**
      * 계좌에 남은 잔고를 보여주는 함수
      */
     @Override
-    protected void showRemain()
+    public void showRemain()
     {
         super.showRemain();
     }
+
 }
