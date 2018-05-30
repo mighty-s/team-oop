@@ -3,13 +3,12 @@ package store.deliver;
 public class QuickDeliver extends Deliver
 {
     // 멤버변수
-    private int additionalFee;      // 추가요금
+    private static int additionalFee = 2000;      // 추가요금
 
     // 생성자
     public QuickDeliver()
     {
         super();
-        this.additionalFee = 2000;
     }
 
     @Override
@@ -25,5 +24,10 @@ public class QuickDeliver extends Deliver
             i++;
         }
         System.out.println("배달이 완료되었습니다");
+    }
+
+    public static int getAdditionalFee()
+    {
+        return additionalFee;
     }
 }

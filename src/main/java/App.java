@@ -101,9 +101,20 @@ public class App
      */
     public void findGoodPlace(Client client) throws IOException
     {
-        String store = findNearStore(client,3.0);     // 3.0 이상 평점의 주변 음식점 데이터를가져온다.
-
+        String storeName = findNearStore(client,3.0);     // 3.0 이상 평점의 주변 음식점 데이터를가져온다.
+        Store store = null;
         if(store == null)return; // 주변에 검색된 가게가 없으면 자동 종료
+
+        // storeList를 순회하다 사용자가 선택한 가게 이름을 가진 store객체를 찾으면 store 변수에 대입하고 루프 탈출
+        for(int i = 0 ; i < storeList.size() ; i++)
+        {
+            if(storeList.get(i).getStoreName().equals(storeName)) // storeList의 i번째 가게 객체의 이름과, 유저가 선택한 가게 이름이 같을 때,
+            {
+                store = storeList.get(i);
+                break;
+            }
+        }
+        store.makeOrder(client);
     }
 
 

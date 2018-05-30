@@ -55,27 +55,68 @@ public class Store
     public void makeOrder(Client client) throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
-        Map<Integer,String> selectMap = menu.showMenu();       //
-        Map<String,Integer> menuMap = menu.getMenuList();
-        String select = null;                               // 콘솔에서 유저가 선택한 메뉴 번호
-        int price = 0;                                      // 메뉴의 가격
+        Map<Integer,String> selectMap = menu.showMenu();                            // map에 < 1, "첫번째 메뉴"> 이런 식으로 저장되어있음 key는 콘솔에 띄워지는 메뉴 번호
+        Map<String,Integer> menuMap = menu.getMenuList();                           // map에 <"메뉴", 가격> 형식으로 저장되어있는 데이터를 가져온다.
+        String select = null;                                                       // 콘솔에서 유저가 선택한 메뉴 번호
+        int price = 0;                                                              // 메뉴의 가격
+        int deliverType = 0;                                                        // 어떤 배달원을 고를지 정하는 변수
 
         System.out.println("원하는 매뉴를 선택해주세요");
-        select = br.readLine();     //  sacnf (문자열 입력받음)
-        price = menuMap.get(selectMap.get(Integer.parseInt(select)));        // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
-        if(client.pay(this,select,price))                 // 고객이 메뉴 결제를 결제한다. 인자 : (해당 가게 객체, 메뉴, 금액), 성공시 true, 실패시 false 리턴
+        select = br.readLine();                                                     // sacnf (문자열 입력받음)
+        price = menuMap.get(selectMap.get(Integer.parseInt(select)));               // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
+
+        deliverType =  pickDeliver();                                               // 여기서 배달 유형을 입력 받는다
+        price += getDriverFee(deliverType);                                         // 배달 종류에 따라 추가요금 계산
+        if(client.pay(this,select,price))                                     // 고객이 메뉴 결제를 결제한다. 인자 : (해당 가게 객체, 메뉴, 금액), 성공시 true, 실패시 false 리턴
         {
-            money += price;                                    // 결제 성공시, 음식 가격을 가게 소지금에 추가
-        }                                                          // 실패시 아무 행동도 하지 않고 함수 종료
+            money += price;                                                         // 결제 성공시, 음식 가격을 가게 소지금에 추가
+            sendDeliver(deliverType);                                               //      배달 시작
+        }                                                                           // 실패시 아무 행동도 하지 않고 함수 종료
+    }
+
+    /**
+     * 사용자가 어떤 배달부를 사용할 것인지 입력을 받아 정하는 클래스
+     * @return   int    1 -> 일반 배달부 . 2 -> 퀵 배달부, 3 -> 드론 배달부
+     */
+    private int pickDeliver() throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
+        System.out.println("어떤 배달부를 고르시겟어요? \n" +
+                           "\t1.일반 배달부  -> 가격 : 무료\n" +
+                           "\t2.퀵 배달부   - > 가격 : " + QuickDeliver.getAdditionalFee() + "\n" +
+                           "\t3. 드론 배달부 -> 가격 : " + DroneDeliver.getAdditionalFee());
+        String choice = br.readLine();  // scanf
+
+        return Integer.parseInt(choice);    // 선택한 번호를 정수로 바꾸고 반환
+    }
+
+    /**
+     * 배달부 타입에 따라 추가 요금을 붙여주는 함수
+     * @param deliverType  드라이버의 종류
+     * @return
+     */
+    private int getDriverFee(int deliverType)
+    {
+        switch(deliverType)
+        {
+            case 1:             // 일반일때 배달요금 없음
+                return 0;
+            case 2:             // 퀵배달 추가요금 계산
+                return QuickDeliver.getAdditionalFee();
+            case 3:             // 드론 배달 추가요금 계산
+                return DroneDeliver.getAdditionalFee();
+            default:
+                return 0;
+        }
     }
 
     /**
      * 사용자가 원하는 타입의 배달부를 대기중인 배달부 큐에서 꺼내는 함수
      *
-     * @param   deliverType 어떤 배달을 시킬지에 대한 값
+     * @param   deliverType 어떤 배달을 시킬지에 대한 값   ( 1. 일반 배달부, 2. 퀵배달, 3.드론배달 )
      * @return  해당 유형의 배달부
      */
-    private Deliver pickDeliver(int deliverType)
+    private Deliver selectDeliver(int deliverType)
     {
         switch(deliverType)                                 // .peek : 큐의 제일 앞을 확인, .offer : 큐에 데이터를 집어넣기 ,
         {                                                   // .poll : 큐의 제일 앞의 값을 삭제하고 그 값을 반환
@@ -106,14 +147,13 @@ public class Store
         }
     }
 
-
     /**
      * 배달을 보내는 함수
      * @param deliverType 사용자가 원하는 타입의 배달,
      */
     private void sendDeliver(int deliverType)   // deliverType , 1. 일반 배달, 2. 퀵배달, 3. 드론배달
     {
-        Deliver deliver = pickDeliver(deliverType);       // 대기중인 배달부 큐에서 데이터를 꺼낸다.
+        Deliver deliver = selectDeliver(deliverType);       // 대기중인 배달부 큐에서 데이터를 꺼낸다.
         try{
             deliver.deliverStart();                      //  뽑은 배달부를 배달보낸다.
         }catch(InterruptedException e) {

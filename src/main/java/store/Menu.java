@@ -62,6 +62,7 @@ public class Menu       // 메뉴판 하나에 대한 클래스
         {
             String key = it.next(); //map 의 key (메뉴 이름)
             System.out.println(menuNum + ". " + key + " :  " + menuList.get(key));
+            menuNum++;
         }
 
         it = menuList.keySet().iterator();                      // iterator은 일회용, 재사용해야한다. 다시 키 set을 받아온다.

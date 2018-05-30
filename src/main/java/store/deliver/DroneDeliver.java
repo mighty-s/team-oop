@@ -2,12 +2,11 @@ package store.deliver;
 
 public class DroneDeliver extends Deliver
 {
-    int additionalFee;
+    private static int additionalFee = 3000;
 
     public DroneDeliver()
     {
         super();
-        this.additionalFee = 3000;
     }
 
     @Override
@@ -23,5 +22,10 @@ public class DroneDeliver extends Deliver
             i++;
         }
         System.out.println("배달이 완료되었습니다");
+    }
+
+    public static int getAdditionalFee()
+    {
+        return additionalFee;
     }
 }
