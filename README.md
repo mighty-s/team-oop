@@ -13,4 +13,8 @@ team-oop
 
 현재 예상 메인화면
 --------------------------------------------------
-![test](./image/test.JPG)
+1. 주변에 상점이 있을 때
+![test](./image/yesStore.JPG)
+
+1. 주변에 상점이 없을 때
+![test](./image/noStore.JPG)

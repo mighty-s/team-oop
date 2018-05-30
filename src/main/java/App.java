@@ -75,8 +75,8 @@ public class App
      */
     public void orderFood(Client client) throws IOException
     {
-        String store = findNearStore(client,0);
-
+        String store = findNearStore(client,0);     // 평점에 상관없이 근처 음식점 데이터를 가져옴으로 0
+        if(store == null)return; // 주변에 검색된 가게가 없으면 자동 종료
 
     }
 
@@ -85,13 +85,15 @@ public class App
      * @param     client      사용자
      *
      */
-    public void findGoodPlace(Client client)
+    public void findGoodPlace(Client client) throws IOException
     {
+        String store = findNearStore(client,3.0);     // 3.0 이상 평점의 주변 음식점 데이터를가져온다.
 
+        if(store == null)return; // 주변에 검색된 가게가 없으면 자동 종료
     }
 
     /**
-     * 유저 근처에 있는 가게 목록을 찾아서 출력해주는 함수
+     * 유저 근처에 있는 가게 목록을 찾고, 유저가 선택한 가게 이름을 출력해주는 함수
      * @param client        사용자
      * @param rateLimit     검색시 평점 x점 이상이라는 제한을 두기 위해 만듬
      * */
@@ -128,13 +130,21 @@ public class App
                     && storeList.get(i).getStoreType().equals(choice)      // 조건 2. 사용자가 선택한 가게 타입과, 가게의 업종이 같고,
                     && storeList.get(i).getAvgRate() >= rateLimit  )       // 조건 3. 해당 가게의 평균 평점이 제시한 평균 평점보다 높을때,
             {
-                selectedStore.put(mapCount,storeList.get(i).getStoreName());    //찾은 가게 이름을 map에 <순서,가게이름> 형태로 저장한다.
-                System.out.println(mapCount + " : 가게 이름 : " + storeList.get(i).getStoreName());
-                mapCount++;                                                    //ex) 1. 가게이름 몽고반점,  --> selectedStore 에는 (1, "몽고반점")이 들어가 있음
+                selectedStore.put(mapCount,storeList.get(i).getStoreName());    //찾은 가게 이름을 map에 <순서,가게이름> 형태로 저장한다
+                                                                                //ex) 1. 가게이름 몽고반점,  --> selectedStore 에는 (1, "몽고반점")이 들어가 있음
+                System.out.println(mapCount + " : 가게 이름 : \t\t" + storeList.get(i).getStoreName()
+                                             + " || 평균 평점 \t\t:" + storeList.get(i).getAvgRate());
+                mapCount++;
             }
         }// end for i
 
-        System.out.println("원하는 가게 번호를 골라주세요");
+        if(mapCount == 1)   //검색된게 아무것도 없으면
+        {
+            System.out.println("\n주변에 해당 가게가 없습니다. 다시골라주세요.");
+            return null;
+        }
+
+        System.out.println("\n원하는 가게 번호를 골라주세요");
         choice = br.readLine(); // scanf
 
         // choice는 문자열이므로 -> 정수로 변환해줘야한다. 자바에서는 Integer.parseInt(문자열) 사용시 문자가 정수로 변환됨
@@ -145,6 +155,8 @@ public class App
                                                             // ex) choice에서 1을 선택하면, (1, "몸고반점")에가서 "몸고반점"값을 리턴한다.
     }// end findNearStore
 
+
+
     /**
      * 고객을 App에 등록하는 함수
      * @prarm  client 고객
@@ -153,6 +165,8 @@ public class App
     {
         clientList.add(client);
     }
+
+
 
     /**
      * 가게를 App에 등록하는 함수
