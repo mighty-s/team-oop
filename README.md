@@ -18,4 +18,5 @@ team-oop
 ![test](./image/yesStore.JPG)
 --------------------------------------------------
 2. 주변에 상점이 없을 때
+
 ![test](./image/noStore.JPG)
