@@ -24,4 +24,4 @@ team-oop
 ----------------------------------------------------
 3. 예상 결제 시나리오 -- 3차 수정, 수정 가능성 있음
  
-![test](./image/tradeTest3.JPG)
+![test](image/tradeTest4.JPG)
