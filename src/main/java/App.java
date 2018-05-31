@@ -53,7 +53,7 @@ public class App
         return SingleTon.instance;
     }
 
-    // ----------------------------------- 멤버 함수 --------------------------------------------------
+    // ----------------------------------- public opeartions --------------------------------------------------
 
     /**
      * 가게들로부터 수수료를 받는 함수
@@ -72,7 +72,8 @@ public class App
     }
 
     /**
-     * 사용자로부터 음식을 주문받는 함수
+     * 1번 메뉴.
+     * 사용자로부터 음식을 주문받는다
      * @param client
      */
     public void orderFood(Client client) throws IOException
@@ -95,7 +96,8 @@ public class App
     }
 
     /**
-     *  맛집 찾기, 사용자 근처에 있는 음식점중 맛집을 찾아준다
+     * 2번 메뉴.
+     * 사용자 근처에 있는 음식점중 맛집을 찾고 주문을 받는다.
      * @param     client      사용자
      *
      */
@@ -103,7 +105,7 @@ public class App
     {
         String storeName = findNearStore(client,3.0);     // 3.0 이상 평점의 주변 음식점 데이터를가져온다.
         Store store = null;
-        if(store == null)return; // 주변에 검색된 가게가 없으면 자동 종료
+        if(storeName == null)return; // 주변에 검색된 가게가 없으면 자동 종료
 
         // storeList를 순회하다 사용자가 선택한 가게 이름을 가진 store객체를 찾으면 store 변수에 대입하고 루프 탈출
         for(int i = 0 ; i < storeList.size() ; i++)
@@ -117,6 +119,7 @@ public class App
         store.makeOrder(client);
     }
 
+    // ----------------------------------- private opeartions --------------------------------------------------
 
     /**
      * 유저 근처에 있는 가게 목록을 찾고, 유저가 선택한 가게 이름을 출력해주는 함수
@@ -149,7 +152,7 @@ public class App
 
         System.out.println("** 당신의 위치** : " + client.getLocation() + "\n인근 가게----------");
 
-        int mapCount = 1;       // map에 1,2,3.. 순서대로 집어넣기 위한 변수
+        int mapCount = 1;                         // map에 1,2,3.. 순서대로 집어넣기 위한 변수
         for(int i = 0; i < storeList.size(); i++) // storeList 배열을 처음부터 끝까지 순회
         {
             if(storeList.get(i).getLocation().equals(client.getLocation())          // 조건 1. 가게의 위치와 사용자의 위치가 같고,

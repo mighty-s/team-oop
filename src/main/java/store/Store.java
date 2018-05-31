@@ -43,7 +43,7 @@ public class Store
 
         for(int i = 0; i < 5 ; i++)         // 기본적으로 모든 가게는 평점을 5개씩 가지고 있다.
         {
-            int rate =(int)(Math.random()*5);   // 0 ~ 5이하의 난수
+            int rate =(int)(Math.random()*3)+2;   // 2 ~ 5이하의 난수
             rateList.add(new Rate(this,new Client(),rate));     //rateList에 평점을 넣는다. 인자 : (자기 자신의 가게 객체, 새로운 고객, 위의 난수)
         }
     }
