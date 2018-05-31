@@ -48,6 +48,10 @@ public class Store
         }
     }
 
+
+
+    // ------------------- public operation -----------------------
+
     /**
      * 사용자로부터 주문을 받는 함수
      * @param client 주문한 고객
@@ -55,24 +59,71 @@ public class Store
     public void makeOrder(Client client) throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
-        Map<Integer,String> selectMap = menu.showMenu();                            // map에 < 1, "첫번째 메뉴"> 이런 식으로 저장되어있음 key는 콘솔에 띄워지는 메뉴 번호
+        Map<Integer,String> menuSelect = menu.showMenu();                           // map에 < 1, "첫번째 메뉴"> 이런 식으로 저장되어있음 key는 콘솔에 띄워지는 메뉴 번호
         Map<String,Integer> menuMap = menu.getMenuList();                           // map에 <"메뉴", 가격> 형식으로 저장되어있는 데이터를 가져온다.
-        String select = null;                                                       // 콘솔에서 유저가 선택한 메뉴 번호
+        int select = 0;                                                       // 콘솔에서 유저가 선택한 메뉴 번호
         int price = 0;                                                              // 메뉴의 가격
         int deliverType = 0;                                                        // 어떤 배달원을 고를지 정하는 변수
 
-        System.out.println("원하는 매뉴를 선택해주세요");
-        select = br.readLine();                                                     // sacnf (문자열 입력받음)
-        price = menuMap.get(selectMap.get(Integer.parseInt(select)));               // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
+        System.out.println("원하는 메뉴번호를 선택해주세요");
+        select = Integer.parseInt(br.readLine());                       // sacnf (문자열 입력받음) --> 받자마자 정수로 변환
+        price = menuMap.get(menuSelect.get(select));                     // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
 
         deliverType =  pickDeliver();                                               // 여기서 배달 유형을 입력 받는다
         price += getDriverFee(deliverType);                                         // 배달 종류에 따라 추가요금 계산
-        if(client.pay(this,select,price))                                     // 고객이 메뉴 결제를 결제한다. 인자 : (해당 가게 객체, 메뉴, 금액), 성공시 true, 실패시 false 리턴
+
+        if(client.pay(this,menuSelect.get(select),price))                     // 고객이 메뉴 결제를 결제한다. 인자 : (해당 가게 객체, 메뉴, 금액), 성공시 true, 실패시 false 리턴
         {
             money += price;                                                         // 결제 성공시, 음식 가격을 가게 소지금에 추가
             sendDeliver(deliverType);                                               //      배달 시작
-        }                                                                           // 실패시 아무 행동도 하지 않고 함수 종료
+            client.rating(this);
+        }
+        // 실패시 아무 행동도 하지 않고 함수 종료
     }
+
+    /**
+     * 가게의 위치를 가져오는 함수
+     * @return 가게 위치
+     */
+    public String getLocation() { return this.location; }
+
+    /**
+     * 가게의 이름을 가져오는 함수
+     * @return 가게의 이름
+     */
+    public String getStoreName() { return this.storeName; }
+
+    /**
+     * 가게의 타입을 가져오는 함수
+     * @return 가게의 업종 타입
+     */
+    public String getStoreType() { return this.storeType; }
+
+    /**
+     * 가게의 평균 평점을 구하는 함수
+     * @return  가게의 평균 평점( 소수점 둘째자리에서 반올림 ex)3.5 )
+     */
+    public double getAvgRate()
+    {
+        double avgRate = 0;
+        for(int i = 0; i < rateList.size() ; i++)
+        {
+            avgRate += rateList.get(i).getRate();   //평균을 구하기 위해 평점값을 계속 더해준다.
+        }
+
+        avgRate = avgRate/rateList.size();  // 평균 계산식 : 총 평점값 / 평점수
+        return Math.round(avgRate*10)/10.0; //소수점 2째자리에서 반올림
+    }
+
+    /**
+     * 고객이 평점을 매긴걸 rateList에 저장하는 함수 -> client클래스에서 호출된다.
+     * @param   rate    고객이 평가한 평점
+     */
+    public void add(Rate rate)
+    {
+        rateList.add(rate);
+    }
+    // ------------------- private operation -----------------------
 
     /**
      * 사용자가 어떤 배달부를 사용할 것인지 입력을 받아 정하는 클래스
@@ -155,7 +206,7 @@ public class Store
     {
         Deliver deliver = selectDeliver(deliverType);       // 대기중인 배달부 큐에서 데이터를 꺼낸다.
         try{
-            deliver.deliverStart();                      //  뽑은 배달부를 배달보낸다.
+            deliver.deliverStart();                         //  뽑은 배달부를 배달보낸다.
         }catch(InterruptedException e) {
             e.printStackTrace();
             System.out.println("배달 실패");
@@ -164,48 +215,5 @@ public class Store
         deliver_ready.offer(deliver);   // 큐에서 꺼냇던 배달부는 다시 큐에 집어넣는다
     }
 
-    //*************** getters && setter ********************
 
-    /**
-     * 가게의 위치를 가져오는 함수
-     * @return 가게 위치
-     */
-    public String getLocation()
-    {
-        return this.location;
-    }
-
-    /**
-     * 가게의 이름을 가져오는 함수
-     * @return 가게의 이름
-     */
-    public String getStoreName()
-    {
-        return this.storeName;
-    }
-
-    /**
-     * 가게의 타입을 가져오는 함수
-     * @return 가게의 업종 타입
-     */
-    public String getStoreType()
-    {
-        return this.storeType;
-    }
-
-    /**
-     * 가게의 평균 평점을 구하는 함수
-     * @return  가게의 평균 평점( 소수점 둘째자리에서 반올림 ex)3.5 )
-     */
-    public double getAvgRate()
-    {
-        double avgRate = 0;
-        for(int i = 0; i < rateList.size() ; i++)
-        {
-            avgRate += rateList.get(i).getRate();   //평균을 구하기 위해 평점값을 계속 더해준다.
-        }
-
-        avgRate = avgRate/rateList.size();  // 평균 계산식 : 총 평점값 / 평점수
-        return Math.round(avgRate*10)/10.0; //소수점 2째자리에서 반올림
-    }
 }

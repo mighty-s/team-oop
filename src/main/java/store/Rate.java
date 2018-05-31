@@ -6,9 +6,9 @@ import store.Store;
 public class Rate
 {
     // 멤버변수
-    private Client client;  // 평점을 매긴 고객
-    private Store store;    // 가게
-    private int rate;       // 평점
+    private Store  store;
+    private Client client;      // 평점을 매긴 고객
+    private int    rate;        // 평점
 
     // 생성자들
     public Rate()
@@ -16,15 +16,15 @@ public class Rate
 
     }
 
-    public Rate(Store store,Client client,int rate)
+    public Rate(Store store, Client client,int rate)
     {
+        this.store  = store;
         this.client = client;
-        this.store = store;
-        this.rate = rate;
+        this.rate   = rate;
     }
 
 
-    /* --------------- getters & setters ------------------*/
+    /* --------------- getters & setters ------------------  */
 
     /**
      * 평점를 리턴하는 함수

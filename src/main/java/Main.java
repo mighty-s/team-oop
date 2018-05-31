@@ -22,7 +22,7 @@ public class Main
                                "|                         메뉴                           |\n"+
                                "|     1. 음식 주문하기            2. 주변 맛집 찾아보기     |\n"+
                                "|     3.                         4.                     | \n"+
-                               "|     0. 종료하기                                        | \n"+
+                               "|     5. 내 주문목록 보기          0. 종료하기             | \n"+
                                "+-------------------------------------------------------+\n");
             command = br.readLine();    // 여기서 한줄을 읽어준다. 실제 scanf가 실행되는 부분
             switch(command)
@@ -36,6 +36,9 @@ public class Main
                 case "3":
                     break;
                 case "4":
+                    break;
+                case "5":
+                    client.showMyOrders();
                     break;
                 case "0":
                     System.out.println("저희 앱을 찾아주셔서 갑사합니다");
