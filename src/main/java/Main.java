@@ -36,12 +36,13 @@ public class Main
                 case "3":
                     break;
                 case "4":
+
                     break;
                 case "5":
                     client.showMyOrders();
                     break;
                 case "0":
-                    System.out.println("저희 앱을 찾아주셔서 갑사합니다");
+                    System.out.println("SYSTEM) 저희 앱을 찾아주셔서 갑사합니다");
                     break;
                 default:
                     System.out.println("다시 입력해 주십시오");

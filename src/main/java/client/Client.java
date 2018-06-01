@@ -33,7 +33,7 @@ public class Client
         // TODO 이부분 구현해야댐!!!
     }
 
-    // ------------------- public operation -----------------------
+    // ---------------------------- public operations --------------------------------
 
     /**
      * 내가 시킨 메뉴를 보여주는 함수
@@ -72,7 +72,7 @@ public class Client
         boolean resull;  // 결제 결과를 나타내기 위한 변수
 
         account.showRemain();
-        System.out.println("SYSTEM) 결제방식을 선택해주세요.\n1.현금결제 \n2.코인결제");
+        System.out.println("SYSTEM) 결제방식을 선택해주세요.\n\t1.현금결제 \n\t2.코인결제");
         select = Integer.parseInt(br.readLine());   //scanf 후, 문자 입력받자마자 정수로 변환
 
         if(select == 1)                  // 현금 결제
@@ -126,7 +126,7 @@ public class Client
         return phone.getLocation();
     }
 
-    // ------------------- private operation -----------------------
+    // ---------------------------- private operations --------------------------------
     /**
      * 주문을 고객의 주문내역에 저장한다.
      * @param order  orderList에 주문 내역

@@ -25,7 +25,7 @@ public class Store
     // 생성자
     public Store(String storeType, String storeName)
     {
-        String location[] = {"혜화동","명동","신사동","논현동"};
+        String location[] = {"혜화동","명동","신사동"};
         rateList  = new ArrayList<>(20);        // 배열
         deliver_ready = new LinkedList<>();                  // 큐
         menu = new Menu(storeType);
@@ -50,7 +50,7 @@ public class Store
 
 
 
-    // ------------------- public operation -----------------------
+    // ----------------------------------------------- public operation --------------------------------------------------------------------
 
     /**
      * 사용자로부터 주문을 받는 함수
@@ -65,7 +65,7 @@ public class Store
         int price = 0;                                                              // 메뉴의 가격
         int deliverType = 0;                                                        // 어떤 배달원을 고를지 정하는 변수
 
-        System.out.println("원하는 메뉴번호를 선택해주세요");
+        System.out.println("SYSTEM) 원하는 메뉴번호를 선택해주세요");
         select = Integer.parseInt(br.readLine());                       // sacnf (문자열 입력받음) --> 받자마자 정수로 변환
         price = menuMap.get(menuSelect.get(select));                     // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
 
@@ -123,7 +123,8 @@ public class Store
     {
         rateList.add(rate);
     }
-    // ------------------- private operation -----------------------
+
+    // ------------------------------ private operations -----------------------------------
 
     /**
      * 사용자가 어떤 배달부를 사용할 것인지 입력을 받아 정하는 클래스
@@ -132,9 +133,9 @@ public class Store
     private int pickDeliver() throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
-        System.out.println("어떤 배달부를 고르시겟어요? \n" +
-                           "\t1.일반 배달부  -> 가격 : 무료\n" +
-                           "\t2.퀵 배달부   - > 가격 : " + QuickDeliver.getAdditionalFee() + "\n" +
+        System.out.println("SYSTEM) 어떤 배달부를 고르시겟어요? \n" +
+                           "\t1. 일반 배달부  -> 가격 : 무료\n" +
+                           "\t2. 퀵 배달부   - > 가격 : " + QuickDeliver.getAdditionalFee() + "\n" +
                            "\t3. 드론 배달부 -> 가격 : " + DroneDeliver.getAdditionalFee());
         String choice = br.readLine();  // scanf
 

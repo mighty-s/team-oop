@@ -14,16 +14,7 @@ public class ClientAccount extends Account
         this.coinAccount = new CoinAccount();
     }
 
-    /**
-     * 부가가치세를 계산해 준다
-     * @param   price   상품 가격
-     * @return  상품의 부가가치세
-     */
-    private int getVAT(int price)
-    {
-        return (int)(price/100)*(100-tradeFee);
-    }
-
+    // ---------------------------- public operations --------------------------------
     /**
      * 남은 잔고와 코인의 개수를 보여준다.
      */
@@ -32,7 +23,7 @@ public class ClientAccount extends Account
     {
         super.showRemain();                     // C++ 에서는 Account.showRemain()
         System.out.println("현재 고객님의 보유 코인 : " + coinAccount.getCoin() + "개");
-        System.out.println("코인 시세              : " + coinAccount.getExchangeRate());
+        coinAccount.showQuote();
     }
 
     /**
@@ -62,7 +53,14 @@ public class ClientAccount extends Account
      */
     public boolean payInCoin(int money)
     {
-        return false;
-    }
+        boolean result = coinAccount.exchange(money);
+                // 해당 금액만큼 돈을 환전하고 결과 받아옴 ( 성공시 true, 실패시 false )
 
+        if(result == true)      // 잘되면 true , 실패하면 false 반환
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
