@@ -31,4 +31,11 @@ public class StoreAccount extends Account
         super.showRemain();
     }
 
+
+    public void add(int money)
+    {
+        this.money += money;
+    }
+
+
 }

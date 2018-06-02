@@ -22,8 +22,8 @@ public class ClientAccount extends Account
     public void showRemain()
     {
         super.showRemain();                     // C++ 에서는 Account.showRemain()
-        System.out.println("현재 고객님의 보유 코인 : " + coinAccount.getCoin() + "개");
-        coinAccount.showQuote();
+        System.out.println("SYSTEM) 현재 고객님의 보유 코인   : " + coinAccount.getCoin() + "개");
+        coinAccount.showQuote();                // 이후 현재 코인의 시세를 보여준다
     }
 
     /**

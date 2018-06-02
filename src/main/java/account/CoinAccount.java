@@ -18,7 +18,7 @@ public class CoinAccount
      */
     public void showQuote()
     {
-        System.out.println("INFO)현재 코인의 시세는 " +
+        System.out.println("INFO) 현재 코인의 시세는 " +
                             getQuote() + "원 / 1코인 입니다."); // 여기서만 코인의 시세를 바꿔준다
     }
 

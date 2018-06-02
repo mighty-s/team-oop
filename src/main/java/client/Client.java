@@ -23,14 +23,15 @@ public class Client
     // 생성자
     public Client()
     {
-        phone = new Phone();
-        account = new ClientAccount();
+        id        = "";
+        phone     = new Phone();
+        account   = new ClientAccount();
         orderList = new ArrayList<>(20);        // 배열
     }
 
     public Client(String id, Phone phone, ClientAccount account )
     {
-        // TODO 이부분 구현해야댐!!!
+        // TODO 이부분 구현해야댐!!!/
     }
 
     // ---------------------------- public operations --------------------------------
@@ -49,15 +50,6 @@ public class Client
     }
 
     /**
-     * 내가 평점을매긴것들을 보여주는 함수
-     */
-    @Deprecated // 쓸모 없을듯
-    public void showRate()
-    {
-
-    }
-
-    /**
      * 음식값을 결제하는 함수
      * @param store 결제하는 가게
      * @param menu  결재할 메뉴
@@ -69,7 +61,6 @@ public class Client
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
         int select = 0;  // 유저의 선택을 입력받기 위한 정수, 문자열을 입력받자마자 정수로 바꾸려고 int씀
-        boolean resull;  // 결제 결과를 나타내기 위한 변수
 
         account.showRemain();
         System.out.println("SYSTEM) 결제방식을 선택해주세요.\n\t1.현금결제 \n\t2.코인결제");
@@ -86,11 +77,19 @@ public class Client
 
             if(account.payInCoin(money)) // 거래 성공시 true, 실패시 false 반화
             {
-                add(new Order(store,menu,money,false));     // 고객 주문 리스트에 주문 추가( 마지막 true는 코인 결제 여부를 나타냄 --> 코인결제)
+                add(new Order(store,menu,money,true));     // 고객 주문 리스트에 주문 추가( 마지막 true는 코인 결제 여부를 나타냄 --> 코인결제)
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * 현재
+     */
+    public void showRemain()
+    {
+        this.account.showRemain();
     }
 
     /**
@@ -108,14 +107,6 @@ public class Client
         rate = Integer.parseInt(br.readLine());         // 읽은 문자 바로 숫자로 변환
 
         store.add(new Rate(store,this,rate));     // 해당 가게에 평가 추가
-    }
-
-    /**
-     * 뭐하는건지 모르겟음
-     */
-    public void returnID()
-    {
-
     }
 
     /**

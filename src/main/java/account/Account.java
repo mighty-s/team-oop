@@ -21,8 +21,9 @@ public abstract class Account
 
     public void showRemain()
     {
-        System.out.println("현재 고객님의 잔고    : " + money + "원입니다.");
-    };
+        System.out.println("SYSTEM) 현재 고객님의 계좌번호   : "  + id);
+        System.out.println("SYSTEM) 현재 고객님의 잔고       : "  + money + "원");
+    }
 
     public abstract boolean pay(int money);
 

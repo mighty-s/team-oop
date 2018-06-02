@@ -76,7 +76,7 @@ public class App
      * 사용자로부터 음식을 주문받는다
      * @param client
      */
-    public void orderFood(Client client) throws IOException
+    public void orderFood(Client client) throws IOException, InterruptedException
     {
         String storeName = findNearStore(client,0);     // 평점에 상관없이 근처 음식점 데이터를 가져옴으로
         Store store = null;                                      //
@@ -101,7 +101,7 @@ public class App
      * @param     client      사용자
      *
      */
-    public void findGoodPlace(Client client) throws IOException
+    public void findGoodPlace(Client client) throws IOException, InterruptedException
     {
         String storeName = findNearStore(client,3.0);     // 3.0 이상 평점의 주변 음식점 데이터를가져온다.
         Store store = null;

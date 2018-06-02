@@ -1,5 +1,6 @@
 package store;
 
+import account.StoreAccount;
 import client.Client;
 import store.deliver.Deliver;
 import store.deliver.DroneDeliver;
@@ -14,25 +15,25 @@ import java.util.*;
 public class Store
 {
     // 멤버변수
-    private Queue<Deliver> deliver_ready;         // 대기중인 배달부 목록  (큐)
-    private List<Rate> rateList;                  // 평점 리스트       (배열)
-    private Menu menu;                            // 가게의 메뉴
-    private String storeType;                     // 가게 종류
-    private String storeName;                     // 가게 이름
-    private String location;                      // 가게 위치
-    private int    money;                         // 가게의 소유금
+    private Queue<Deliver>  deliver_ready;   // 대기중인 배달부 목록  (큐)
+    private List<Rate>      rateList;        // 평점 리스트       (배열)
+    private Menu            menu;            // 가게의 메뉴
+    private String          storeType;       // 가게 종류
+    private String          storeName;       // 가게 이름
+    private String          location;        // 가게 위치
+    private StoreAccount    account;         // 가게의 소유금
 
     // 생성자
     public Store(String storeType, String storeName)
     {
         String location[] = {"혜화동","명동","신사동"};
-        rateList  = new ArrayList<>(20);        // 배열
-        deliver_ready = new LinkedList<>();                  // 큐
-        menu = new Menu(storeType);
-        this.money     = 0;
+        rateList       = new ArrayList<>(20);        // 배열
+        deliver_ready  = new LinkedList<>();                     // 큐
+        menu           = new Menu(storeType);
+        account        = new StoreAccount();
         this.storeType = storeType;
         this.storeName = storeName;
-        this.location = location[(int)(Math.random()*location.length)];       //location 배열 중의 랜덤한 값중 하나
+        this.location  = location[(int)(Math.random()*location.length)];       //location 배열 중의 랜덤한 값중 하나
 
         for(int i = 0 ; i < 4 ; i++)        // 기본적으로 모든 가게는 배달부가 종류별로 3개씩 있다.
         {                                   // .offer : 큐에 데이터를 집어넣기
@@ -56,7 +57,7 @@ public class Store
      * 사용자로부터 주문을 받는 함수
      * @param client 주문한 고객
      */
-    public void makeOrder(Client client) throws IOException
+    public void makeOrder(Client client) throws IOException, InterruptedException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
         Map<Integer,String> menuSelect = menu.showMenu();                           // map에 < 1, "첫번째 메뉴"> 이런 식으로 저장되어있음 key는 콘솔에 띄워지는 메뉴 번호
@@ -66,15 +67,15 @@ public class Store
         int deliverType = 0;                                                        // 어떤 배달원을 고를지 정하는 변수
 
         System.out.println("SYSTEM) 원하는 메뉴번호를 선택해주세요");
-        select = Integer.parseInt(br.readLine());                       // sacnf (문자열 입력받음) --> 받자마자 정수로 변환
-        price = menuMap.get(menuSelect.get(select));                     // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
+        select = Integer.parseInt(br.readLine());                           // sacnf (문자열 입력받음) --> 받자마자 정수로 변환
+        price = menuMap.get(menuSelect.get(select));                        // 금액은 map객체에서 입력받은 숫자(키)로부터 꺼내온다.
 
         deliverType =  pickDeliver();                                               // 여기서 배달 유형을 입력 받는다
         price += getDriverFee(deliverType);                                         // 배달 종류에 따라 추가요금 계산
 
         if(client.pay(this,menuSelect.get(select),price))                     // 고객이 메뉴 결제를 결제한다. 인자 : (해당 가게 객체, 메뉴, 금액), 성공시 true, 실패시 false 리턴
         {
-            money += price;                                                         // 결제 성공시, 음식 가격을 가게 소지금에 추가
+            account.add(price);                                                     // 결제 성공시, 음식 가격을 가게 소지금에 추가
             sendDeliver(deliverType);                                               //      배달 시작
             client.rating(this);
         }
@@ -134,9 +135,9 @@ public class Store
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));   // scanf를 사용하기 위한 객체
         System.out.println("SYSTEM) 어떤 배달부를 고르시겟어요? \n" +
-                           "\t1. 일반 배달부  -> 가격 : 무료\n" +
-                           "\t2. 퀵 배달부   - > 가격 : " + QuickDeliver.getAdditionalFee() + "\n" +
-                           "\t3. 드론 배달부 -> 가격 : " + DroneDeliver.getAdditionalFee());
+                           "\t1. 일반 배달부  -> 가격 : 무료 \n" +
+                           "\t2. 퀵 배달부    -> 가격 : " + QuickDeliver.getAdditionalFee() + "\n" +
+                           "\t3. 드론 배달부  -> 가격 : " + DroneDeliver.getAdditionalFee());
         String choice = br.readLine();  // scanf
 
         return Integer.parseInt(choice);    // 선택한 번호를 정수로 바꾸고 반환
@@ -168,7 +169,7 @@ public class Store
      * @param   deliverType 어떤 배달을 시킬지에 대한 값   ( 1. 일반 배달부, 2. 퀵배달, 3.드론배달 )
      * @return  해당 유형의 배달부
      */
-    private Deliver selectDeliver(int deliverType)
+    private void sendDeliver(int deliverType) throws InterruptedException
     {
         switch(deliverType)                                 // .peek : 큐의 제일 앞을 확인, .offer : 큐에 데이터를 집어넣기 ,
         {                                                   // .poll : 큐의 제일 앞의 값을 삭제하고 그 값을 반환
@@ -179,42 +180,27 @@ public class Store
                     Deliver deliver = deliver_ready.poll();
                     deliver_ready.offer(deliver);
                 }
-                return deliver_ready.poll();
+                deliver_ready.poll()
+                             .deliverStart();
+                break;
             case 2: //  퀵 배달을 고를 때
                 while(!(deliver_ready.peek() instanceof QuickDeliver))  // 큐 제일 앞이 QuickDeliver가 아닐때 까지 계속 뽑고 다시 넣기를 반복
                 {
                     Deliver deliver = deliver_ready.poll();
                     deliver_ready.offer(deliver);
                 }
-                return deliver_ready.poll();
+                deliver_ready.poll()
+                             .deliverStart();
+                break;
             case 3: // 드론배달을 고를 때
                 while(!(deliver_ready.peek() instanceof DroneDeliver)) // 큐 제일 앞이 DroneDeliver가 아닐때 까지 계속 뽑고 다시 넣기를 반복
                 {
                     Deliver deliver = deliver_ready.poll();
                     deliver_ready.offer(deliver);
                 }
-                return deliver_ready.poll();
-            default:
-                return null;    // 전부 아닐경우 null을 리턴
+                deliver_ready.poll()
+                             .deliverStart();
+                break;
         }
     }
-
-    /**
-     * 배달을 보내는 함수
-     * @param deliverType 사용자가 원하는 타입의 배달,
-     */
-    private void sendDeliver(int deliverType)   // deliverType , 1. 일반 배달, 2. 퀵배달, 3. 드론배달
-    {
-        Deliver deliver = selectDeliver(deliverType);       // 대기중인 배달부 큐에서 데이터를 꺼낸다.
-        try{
-            deliver.deliverStart();                         //  뽑은 배달부를 배달보낸다.
-        }catch(InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("배달 실패");
-        }
-
-        deliver_ready.offer(deliver);   // 큐에서 꺼냇던 배달부는 다시 큐에 집어넣는다
-    }
-
-
 }
