@@ -117,6 +117,26 @@ public class Store
     }
 
     /**
+     * 가게의 잔고를 가져오는 함수
+     * @return
+     */
+    public int getStoreMoney()
+    {
+        return this.account.getMoney();
+    }
+
+
+    /**
+     * 가게에서 수수료를 지불하는 함수
+     * @return
+     */
+//    public int payCommission()
+//    {
+//        return this.account.pay();;
+//    }
+
+
+    /**
      * 고객이 평점을 매긴걸 rateList에 저장하는 함수 -> client클래스에서 호출된다.
      * @param   rate    고객이 평가한 평점
      */

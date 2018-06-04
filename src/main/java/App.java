@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author sight
- * @since 2015-05-22
+ * @since 2018-05-22
  *
  * 이 클래스는 싱글톤 패턴을 따릅니다.
  * 객체를 만드는 행위는 getInstance 로만 합니다.
@@ -19,6 +19,7 @@ public class App
     private List<Client> clientList;       // 고객의 정보
     private List<Store>  storeList;        // 가게의 정보
     private int profit;                    // 잔고
+    private int appFee = 3;              //어플 수수료 (비율) -> 공통이므로 static ( 3% )
 
     // constructor & singleton
     private App() {
@@ -26,15 +27,16 @@ public class App
         storeList  = new LinkedList<>();        // 배열
         profit = 0;
 
-        String store[][] = {
-                {"중국집","홍콩반점"  },{"중국집","몽고반점"} , {"중국집","반점반점"},
-                {"중국집","한강반점"  },{"중국집","국일관"  } , {"중국집","만리장성"},
-                {"치킨집","또레오레"  },{"치킨집","굽네치킨"} , {"치킨집","치킨공주"},
-                {"치킨집","BBQ"      },{"치킨집","조은치킨"} , {"치킨집","위잉치킨"},
-                {"피자집","피자나라"  },{"피자집","피자스쿨"} , {"피자집","피자헛"  },
-                {"피자집","도미노피자"},{"피자집","굳피자"  } , {"피자집","피자마루"},
-                {"족발집","이런족발"  },{"족발집","족발나라"} , {"족발집","족발장인"},
-                {"족발집","족발만세"  },{"족발집","굳족발"  } , {"족발집","족발전문"},
+        String store[][] =
+        {
+            {"중국집","홍콩반점"  },{"중국집","몽고반점"} , {"중국집","반점반점"},
+            {"중국집","한강반점"  },{"중국집","국일관"  } , {"중국집","만리장성"},
+            {"치킨집","또레오레"  },{"치킨집","굽네치킨"} , {"치킨집","치킨공주"},
+            {"치킨집","BBQ"      },{"치킨집","조은치킨"} , {"치킨집","위잉치킨"},
+            {"피자집","피자나라"  },{"피자집","피자스쿨"} , {"피자집","피자헛"  },
+            {"피자집","도미노피자"},{"피자집","굳피자"  } , {"피자집","피자마루"},
+            {"족발집","이런족발"  },{"족발집","족발나라"} , {"족발집","족발장인"},
+            {"족발집","족발만세"  },{"족발집","굳족발"  } , {"족발집","족발전문"},
         };
 
         for(int i = 0; i < store.length ; i++)
@@ -56,19 +58,77 @@ public class App
     // ----------------------------------- public opeartions --------------------------------------------------
 
     /**
-     * 가게들로부터 수수료를 받는 함수
+     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
+     *
+     * @throws IOException
      */
-    public void getCommision()
+    public void adminMode() throws IOException
     {
+        String command = "";
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+        while(!command.equals("0"))
+        {
+            System.out.println
+            (
+                    "+---------------------------------------------+\n" +
+                    "|           **** 앱 관리자 모드 ****           |\n" +
+                    "|                                             |\n" +
+                    "|  1. 가게 매출 확인        2. 가게 수수료 걷기  |\n" +
+                    "|  0. 관리자 모드 종료                          |\n" +
+                    "+---------------------------------------------+"
+            );
+
+            command = br.readLine();
+            switch(command)
+            {
+                case "1":
+                    viewStoreSales();
+                    break;
+                case "2":
+                    getCommission();
+                    break;
+                case "0":
+                    System.out.println("SYSTEM) 관리자모드 종료");
+                    break;
+                default:
+                    System.out.println("종료하려면 0 을 선택해주세요");
+                    break;
+            }
+        }
     }
 
     /**
-     *  메뉴를 선택을 하면 아무 가게에서나 배달을 시켜주는 함수
+     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
+     * 가게의 목록을 확인하는 함수 (관리자모드)
      */
-    public void randomCall()
+    private void viewStoreSales()
     {
+        for(int i = 0; i < storeList.size() ; i++)  // stroeList를 한번 순회하면서 정보를 출력한다.
+        {
+            System.out.println
+            (
+              "------------------------------------------------\n" +
+              "가게 이름 : " + storeList.get(i).getStoreName() +"\n"+
+              "가게 업종 : " + storeList.get(i).getStoreType() +"\n"+
+              "평균 평점 : " + storeList.get(i).getAvgRate()   +"\n"+
+              "가게 위치 : " + storeList.get(i).getLocation()  +"\n"+
+              "가게 매출 : " + storeList.get(i).getStoreMoney()+"\n"+
+              "------------------------------------------------"
+            );
+        }
+    }
 
+    /**
+     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
+     * 가게들로부터 수수료를 받는 함수 (관리자모드)
+     */
+    private void getCommission()
+    {
+//        for(int i = 0; i < storeList.size() ; i++)  // stroeList를 한번 순회하면서 정보를 출력한다.
+//        {
+//            storeList.get(i).payCommission();
+//        }
     }
 
     /**
@@ -132,6 +192,7 @@ public class App
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("어떤 메뉴를 원하나요? \n1.중국집  | 2.치킨집 | 3.피자집 | 4.족발집");
         String choice = br.readLine();      // scanf
+
         switch(choice)
         {
             case "1":
@@ -150,7 +211,8 @@ public class App
                 break;
         }
 
-        System.out.println("** 당신의 위치 ** : " + client.getLocation() + "\n------------------------------- 인근 가게 -------------------------------");
+        System.out.println("** 당신의 위치 ** : " + client.getLocation() +
+                        "\n------------------------------- 인근 가게 -------------------------------");
 
         int mapCount = 1;                         // map에 1,2,3.. 순서대로 집어넣기 위한 변수
         for(int i = 0; i < storeList.size(); i++) // storeList 배열을 처음부터 끝까지 순회
@@ -188,7 +250,7 @@ public class App
 
     /**
      * 고객을 App에 등록하는 함수
-     * @prarm  client  고객
+     * @param  client  고객
      *
      */
     public void add(Client client)

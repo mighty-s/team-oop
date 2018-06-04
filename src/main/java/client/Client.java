@@ -29,9 +29,10 @@ public class Client
         orderList = new ArrayList<>(20);        // 배열
     }
 
+    @Deprecated
     public Client(String id, Phone phone, ClientAccount account )
     {
-        // TODO 이부분 구현해야댐!!!/
+
     }
 
     // ---------------------------- public operations --------------------------------
@@ -50,7 +51,7 @@ public class Client
     }
 
     /**
-     * 음식값을 결제하는 함수
+     * 음식값을 현금으로 결제하는 함수
      * @param store 결제하는 가게
      * @param menu  결재할 메뉴
      * @param money 결제할 금액
@@ -70,14 +71,14 @@ public class Client
         {
             if(account.pay(money))       // 거래 성공시 true, 실패시 false 반화)
             {
-                add(new Order(store,menu,money,false)); // 고객 주문 리스트에 주문 추가( 마지막 false는 코인 결제 여부를 나타냄 --> 현금결제)
+                add(new Order(store.getStoreName(),menu,money,false)); // 고객 주문 리스트에 주문 추가( 마지막 false는 코인 결제 여부를 나타냄 --> 현금결제)
                 return true;
             }
         }else if(select == 2){           // 코인 거래
 
             if(account.payInCoin(money)) // 거래 성공시 true, 실패시 false 반화
             {
-                add(new Order(store,menu,money,true));     // 고객 주문 리스트에 주문 추가( 마지막 true는 코인 결제 여부를 나타냄 --> 코인결제)
+                add(new Order(store.getStoreName(),menu,money,true));     // 고객 주문 리스트에 주문 추가( 마지막 true는 코인 결제 여부를 나타냄 --> 코인결제)
                 return true;
             }
         }
@@ -85,7 +86,7 @@ public class Client
     }
 
     /**
-     * 현재
+     * 현재 계좌 잔고를 가져와서 보여주는 함수
      */
     public void showRemain()
     {

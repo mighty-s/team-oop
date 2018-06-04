@@ -13,6 +13,7 @@ public class Menu       // 메뉴판 하나에 대한 클래스
     private Map<String,Integer> menuList;  // 메뉴의 목록을 가지고 있는 리스트
                                    // <key,value> 형태이며, 여기선 <"음식이름",가격> 형태로 되어있다.
     // 생성자
+    @Deprecated
     public Menu(){}
 
     public Menu(String storeType)

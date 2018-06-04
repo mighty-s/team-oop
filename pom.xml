@@ -19,6 +19,19 @@
             <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
 
     <groupId>kpu.sight</groupId>
@@ -27,7 +40,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -52,9 +64,11 @@
                         <artifactId>junit-jupiter-engine</artifactId>
                         <version>5.0.1</version>
                     </dependency>
+
+                    <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+
                 </dependencies>
             </plugin>
-
         </plugins>
     </build>
 </project>

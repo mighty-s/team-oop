@@ -2,23 +2,21 @@ package account;
 
 public class StoreAccount extends Account
 {
-    // 맴버변수
-    private static int appFee = 3;              //어플 수수료 (비율) -> 공통이므로 static ( 3% )
-
     // 생성자
     public StoreAccount()
     {
         super();
+        this.money = 10000;
     }
 
 
     /**
      * 수수료를 지불하는 함수
-     * @param  money   입력받을 수수료
-     * @return bool    수수료 지불 성공시 true, 실패시 false
+     * @param  commisionRate   입력받을 수수료
+     * @return bool            수수료 지불 성공시 true, 실패시 false
      */
     @Override
-    public boolean pay(int money) {
+    public boolean pay(int commisionRate) {
         return false;
     }
 
@@ -37,5 +35,8 @@ public class StoreAccount extends Account
         this.money += money;
     }
 
-
+    public int getMoney()
+    {
+        return this.money;
+    }
 }

@@ -4,13 +4,13 @@ package account;
 public class ClientAccount extends Account
 {
     // 멤버변수
-    private static int tradeFee = 10;           // 수수료 ( 10%)
     private CoinAccount coinAccount;            // 코인 지갑
 
     // 생성자
     public ClientAccount()
     {
         super();                                // C++ 에서는 Account()
+        this.money = 30000;
         this.coinAccount = new CoinAccount();
     }
 

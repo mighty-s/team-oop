@@ -3,7 +3,7 @@ package store.deliver;
 public class DroneDeliver extends Deliver
 {
     private static int additionalFee = 3000;
-
+    private int battery ;                       // TODO 배터리구현 필요
     public DroneDeliver()
     {
         super();
@@ -27,5 +27,10 @@ public class DroneDeliver extends Deliver
     public static int getAdditionalFee()
     {
         return additionalFee;
+    }
+
+    public void recharge()
+    {
+
     }
 }

@@ -10,7 +10,7 @@ public abstract class Account
     protected Account()
     {
         this.id = (int)(Math.random() * 9999) + "-" + (int)(Math.random() * 9999);  // "9999-9999" 형식의 랜덤 ID
-        this.money = 30000; // 기본 소지금 3만원
+        this.money = 0; // 기본 소지금 3만원
     }
 
     protected Account(String id, int money)
