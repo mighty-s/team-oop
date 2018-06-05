@@ -50,9 +50,9 @@ public class CoinAccount
             System.out.println("코인이 부족합니다 \n현재 보유코인 : " + coin );
             return false;
         }else{
-            System.out.println("잔여코인 : " + coin);
-            coin -= result;     //
-            System.out.println("잔여코인 : " + coin);
+            System.out.println("결제 전 코인 : " + coin);
+            coin -= result;
+            System.out.println("결제 후 코인 : " + coin);
             return true;
         }
     }

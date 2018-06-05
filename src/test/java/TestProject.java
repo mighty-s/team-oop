@@ -30,7 +30,8 @@ public class TestProject {
         BufferedReader br;
 
         URL url = new URL("https://api.gopax.co.kr/trading-pairs/BTC-KRW/stats");
-
+                        // 실제 고팍스 코인 시세 정보 주소, 위의 파라미터는 고팍스 API 주소
+                        // https://www.gopax.co.kr/
         HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestMethod("GET");
