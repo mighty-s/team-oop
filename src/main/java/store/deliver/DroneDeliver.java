@@ -3,14 +3,16 @@ package store.deliver;
 public class DroneDeliver extends Deliver
 {
     private static int additionalFee = 3000;
-    private int battery ;                       // TODO 배터리구현 필요
+    private int battery ;
     public DroneDeliver()
     {
         super();
+        battery = 100;
     }
 
     @Override
     public void deliverStart() throws InterruptedException {
+        this.battery -= 10;
         int i = 0;
         System.out.println("배달을 시작합니다 -- 배달 유형 : 드론 --");
         while( i < 4)
@@ -22,6 +24,8 @@ public class DroneDeliver extends Deliver
             i++;
         }
         System.out.println("배달이 완료되었습니다");
+
+        recharge();
     }
 
     public static int getAdditionalFee()
@@ -31,6 +35,6 @@ public class DroneDeliver extends Deliver
 
     public void recharge()
     {
-
+        this.battery = 100;
     }
 }
