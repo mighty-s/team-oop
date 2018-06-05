@@ -19,14 +19,14 @@ public class App
     private List<Client> clientList;       // 고객의 정보
     private List<Store>  storeList;        // 가게의 정보
     private int profit;                    // 잔고
-    private int appFee = 3;              //어플 수수료 (비율) -> 공통이므로 static ( 3% )
+    private int appFee;                    //어플 수수료 (비율) -> 공통이므로 static ( 3% )
 
     // constructor & singleton
     private App() {
         clientList = new LinkedList<>();        // 배열
         storeList  = new LinkedList<>();        // 배열
         profit = 0;
-
+        appFee = 3;                             // 수수료 함수
         String store[][] =
         {
             {"중국집","홍콩반점"  },{"중국집","몽고반점"} , {"중국집","반점반점"},
@@ -58,8 +58,8 @@ public class App
     // ----------------------------------- public opeartions --------------------------------------------------
 
     /**
-     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
-     *
+     * 자바에서 추가로 구현
+     * 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
      * @throws IOException
      */
     public void adminMode() throws IOException
@@ -75,7 +75,7 @@ public class App
                     "|           **** 앱 관리자 모드 ****           |\n" +
                     "|                                             |\n" +
                     "|  1. 가게 매출 확인        2. 가게 수수료 걷기  |\n" +
-                    "|  0. 관리자 모드 종료                          |\n" +
+                    "|  3. 어플 매출 확인        0. 관리자 모드 종료  |\n" +
                     "+---------------------------------------------+"
             );
 
@@ -88,6 +88,9 @@ public class App
                 case "2":
                     getCommission();
                     break;
+                case "3":
+                    showProfit();
+                    break;
                 case "0":
                     System.out.println("SYSTEM) 관리자모드 종료");
                     break;
@@ -96,39 +99,6 @@ public class App
                     break;
             }
         }
-    }
-
-    /**
-     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
-     * 가게의 목록을 확인하는 함수 (관리자모드)
-     */
-    private void viewStoreSales()
-    {
-        for(int i = 0; i < storeList.size() ; i++)  // stroeList를 한번 순회하면서 정보를 출력한다.
-        {
-            System.out.println
-            (
-              "------------------------------------------------\n" +
-              "가게 이름 : " + storeList.get(i).getStoreName() +"\n"+
-              "가게 업종 : " + storeList.get(i).getStoreType() +"\n"+
-              "평균 평점 : " + storeList.get(i).getAvgRate()   +"\n"+
-              "가게 위치 : " + storeList.get(i).getLocation()  +"\n"+
-              "가게 매출 : " + storeList.get(i).getStoreMoney()+"\n"+
-              "------------------------------------------------"
-            );
-        }
-    }
-
-    /**
-     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
-     * 가게들로부터 수수료를 받는 함수 (관리자모드)
-     */
-    private void getCommission()
-    {
-//        for(int i = 0; i < storeList.size() ; i++)  // stroeList를 한번 순회하면서 정보를 출력한다.
-//        {
-//            storeList.get(i).payCommission();
-//        }
     }
 
     /**
@@ -179,7 +149,72 @@ public class App
         store.makeOrder(client);            // 주문을 받는다
     }
 
+
+    /**
+     * 고객을 App에 등록하는 함수
+     * @param  client  고객
+     *
+     */
+    public void add(Client client)
+    {
+        clientList.add(client);
+    }
+
+    /**
+     * 가게를 App에 등록하는 함수
+     * @param  store    상점
+     *
+     */
+    public void add(Store store)
+    {
+        storeList.add(store);
+    }
+
+    public void showProfit()
+    {
+        System.out.println
+        (
+            "-----------------------------------------------------\n" +
+            " 현재 앱의 잔고는 " + this.profit + "원 입니다.\n"          +
+            "-----------------------------------------------------"
+        );
+    }
     // ----------------------------------- private opeartions --------------------------------------------------
+
+
+    /**
+     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
+     * 가게의 목록을 확인하는 함수 (관리자모드)
+     */
+    private void viewStoreSales()
+    {
+        for(int i = 0; i < storeList.size() ; i++)  // stroeList를 한번 순회하면서 정보를 출력한다.
+        {
+            System.out.println
+            (
+                    "------------------------------------------------\n" +
+                    "가게 이름 : " + storeList.get(i).getStoreName() +"\n"+
+                    "가게 업종 : " + storeList.get(i).getStoreType() +"\n"+
+                    "평균 평점 : " + storeList.get(i).getAvgRate()   +"\n"+
+                    "가게 위치 : " + storeList.get(i).getLocation()  +"\n"+
+                    "가게 매출 : " + storeList.get(i).getStoreMoney()+"\n"+
+                    "------------------------------------------------"
+            );
+        }
+    }
+
+    /**
+     * 자바에서 추가로 구현 앱에서 수수료를 걷는 행동을 시뮬레이션 할 수 있다.
+     * 가게들로부터 수수료를 받는 함수 (관리자모드)
+     */
+    private void getCommission()
+    {
+        for(int i = 0; i < storeList.size() ; i++)  // stroeList를 한번 순회하면서 정보를 출력한다.
+        {
+            profit += storeList.get(i).payCommission(appFee);
+
+        }
+    }
 
     /**
      * 유저 근처에 있는 가게 목록을 찾고, 유저가 선택한 가게 이름을 출력해주는 함수
@@ -246,26 +281,5 @@ public class App
         return selectedStore.get(Integer.parseInt(choice)); // 맵에 해당 키에 대한 값을 꺼내서 리턴한다
         // ex) choice에서 1을 선택하면, (1, "몸고반점")에가서 "몸고반점"값을 리턴한다.
     }// end findNearStore
-
-
-    /**
-     * 고객을 App에 등록하는 함수
-     * @param  client  고객
-     *
-     */
-    public void add(Client client)
-    {
-        clientList.add(client);
-    }
-
-    /**
-     * 가게를 App에 등록하는 함수
-     * @param  store    상점
-     *
-     */
-    public void add(Store store)
-    {
-        storeList.add(store);
-    }
 
 }

@@ -45,7 +45,7 @@ public class Store
         for(int i = 0; i < 5 ; i++)         // 기본적으로 모든 가게는 평점을 5개씩 가지고 있다.
         {
             int rate =(int)(Math.random()*3)+2;   // 2 ~ 5이하의 난수
-            rateList.add(new Rate(this,new Client(),rate));     //rateList에 평점을 넣는다. 인자 : (자기 자신의 가게 객체, 새로운 고객, 위의 난수)
+            rateList.add(new Rate(this.getStoreName(),new Client().getId(),rate));     //rateList에 평점을 넣는다. 인자 : (자기 자신의 가게 객체, 새로운 고객, 위의 난수)
         }
     }
 
@@ -76,7 +76,7 @@ public class Store
         if(client.pay(this,menuSelect.get(select),price))                     // 고객이 메뉴 결제를 결제한다. 인자 : (해당 가게 객체, 메뉴, 금액), 성공시 true, 실패시 false 리턴
         {
             account.add(price);                                                     // 결제 성공시, 음식 가격을 가게 소지금에 추가
-            sendDeliver(deliverType);                                               //      배달 시작
+            sendDeliver(deliverType);                                               // 배달 시작
             client.rating(this);
         }
         // 실패시 아무 행동도 하지 않고 함수 종료
@@ -128,12 +128,20 @@ public class Store
 
     /**
      * 가게에서 수수료를 지불하는 함수
+     * @param appCommission 앱의 수수료 퍼센트
      * @return
      */
-//    public int payCommission()
-//    {
-//        return this.account.pay();;
-//    }
+    public int payCommission(int appCommission)
+    {
+        int commission = (this.getStoreMoney()/100)*appCommission;
+
+        if(account.pay(appCommission) == true)
+        {
+            return commission;
+        }else{
+            return 0;
+        }
+    }
 
 
     /**

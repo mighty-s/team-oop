@@ -23,16 +23,19 @@ public class Client
     // 생성자
     public Client()
     {
-        id        = "";
+        String random[] = { "KpuLife","Bob","RiceTheif","Rayor","Professor","Mr.999","Landlord","Boss" };
+        id        = random[(int)(Math.random()*random.length)];       // 고객의 id 랜덤하게 생성
         phone     = new Phone();
         account   = new ClientAccount();
         orderList = new ArrayList<>(20);        // 배열
     }
 
-    @Deprecated
-    public Client(String id, Phone phone, ClientAccount account )
+    public Client(String id)        // 시연용
     {
-
+        this.id   = id;       // 고객의 id 랜덤하게 생성
+        phone     = new Phone();
+        account   = new ClientAccount();
+        orderList = new ArrayList<>(20);        // 배열
     }
 
     // ---------------------------- public operations --------------------------------
@@ -107,7 +110,7 @@ public class Client
 
         rate = Integer.parseInt(br.readLine());         // 읽은 문자 바로 숫자로 변환
 
-        store.add(new Rate(store,this,rate));     // 해당 가게에 평가 추가
+        store.add(new Rate(store.getStoreName(),this.getId(),rate));     // 해당 가게에 평가 추가
     }
 
     /**
@@ -117,6 +120,8 @@ public class Client
     {
         return phone.getLocation();
     }
+
+    public String getId(){return this.id;}
 
     // ---------------------------- private operations --------------------------------
     /**
