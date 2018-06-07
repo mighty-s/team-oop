@@ -11,7 +11,7 @@ public class Phone
     // 생성자
     public Phone()
     {
-        String location[] = {"혜화동","명동","신사동"};
+        String location[] = {"혜화동","신사동"};
         this.location = location[(int)(Math.random()*location.length)];
         this.phoneNumber = "010-" + (int)(Math.random()*8999)+1000 +"-"+(int)(Math.random()*8999)+1000;
                             // 핸드폰번호는 " 010-xxxx-xxxx" 형식

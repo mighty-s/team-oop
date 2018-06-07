@@ -25,6 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestProject {
 
     @Test
+    void helloJUnit()
+    {
+        assertEquals(1,1);
+    }
+
+    @Test
     void runTest() throws InterruptedException, IOException
     {
         BufferedReader br;
@@ -49,7 +55,7 @@ public class TestProject {
         try {
             JSONObject json = (JSONObject) jsonParser.parse(coinInfo);
 
-            System.out.println(json.get("close"));
+            System.out.println("\n\n\n\n\n\n\t\t\t 현재 비트코인의 시세 : "+json.get("close")+"\n\n\n\n\n\n\n\n\n\n");
 
         } catch (ParseException e) {
             e.printStackTrace();

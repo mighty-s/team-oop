@@ -109,6 +109,14 @@ public class Client
                            "SYSTEM) 평점을 매겨주세요! 1 ~ 5 사이의 정수");
 
         rate = Integer.parseInt(br.readLine());         // 읽은 문자 바로 숫자로 변환
+        if(rate > 5)                                    // 자료은닉
+        {
+            rate = 5;
+            System.out.println("SYSTEM) 평점은 최대 5까지만 입력할 수 있습니다.\nSYSTEM) 5를 초과해서 입력하셧으니 5로 적용됩니다");
+        }else if(rate <= 0 ){
+            rate = 1;
+            System.out.println("SYSTEM) 평점은 최소 1까지만 입력할 수 있습니다.\nSYSTEM) 1를 미만으로 입력하셧으니 1로 적용됩니다");
+        }
 
         store.add(new Rate(store.getStoreName(),this.getId(),rate));     // 해당 가게에 평가 추가
     }

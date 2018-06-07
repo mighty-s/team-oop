@@ -26,7 +26,7 @@ public class Store
     // 생성자
     public Store(String storeType, String storeName)
     {
-        String location[] = {"혜화동","명동","신사동"};
+        String location[] = {"혜화동","신사동"};
         rateList       = new ArrayList<>(20);        // 배열
         deliver_ready  = new LinkedList<>();                     // 큐
         menu           = new Menu(storeType);

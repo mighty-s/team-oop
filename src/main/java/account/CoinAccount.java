@@ -47,12 +47,12 @@ public class CoinAccount
         double result = Math.round(((double)money/(double)exchangeRate)*100)/100.0;
         if(coin < result )        // 가지고 있는 코인 수 < 환전하려는 코인의 금액
         {
-            System.out.println("코인이 부족합니다 \n현재 보유코인 : " + coin );
+            System.out.println("SYSTEM) 코인이 부족합니다 \n현재 보유코인 : " + coin );
             return false;
         }else{
-            System.out.println("결제 전 코인 : " + coin);
+            System.out.println("SYSTEM) 결제 전 코인 : " + coin);
             coin -= result;
-            System.out.println("결제 후 코인 : " + coin);
+            System.out.println("SYSTEM) 결제 후 코인 : " + coin);
             return true;
         }
     }
